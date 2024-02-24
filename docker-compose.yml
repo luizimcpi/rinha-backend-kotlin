@@ -1,0 +1,63 @@
+version: '3.4'
+services:
+  api1: &api1
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    image: luizimcpi/rinha-backend-kotlin-2024
+    restart: always
+    environment:
+      - DATABASE_URL=jdbc:postgresql://database:5432/postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+    hostname: api1
+    depends_on:
+      - database
+    expose:
+      - "9001"
+    networks:
+      - prod
+    deploy:
+      resources:
+        limits:
+          cpus: '0.55'
+          memory: '150MB'
+  api2:
+    <<: *api1
+    hostname: api2
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api1
+      - api2
+    ports:
+      - "9999:9999"
+    networks:
+      - prod
+    deploy:
+      resources:
+        limits:
+          cpus: '0.15'
+          memory: '10MB'
+
+  database:
+    restart: always
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - 5432:5432
+    networks:
+      - prod
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '240MB'
+
+networks:
+  prod:
+    driver: bridge
