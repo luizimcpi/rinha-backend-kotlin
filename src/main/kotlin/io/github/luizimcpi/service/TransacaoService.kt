@@ -11,12 +11,14 @@ import io.github.luizimcpi.web.dto.response.SaldoResponse
 import io.github.luizimcpi.web.dto.response.TransacaoExtratoResponse
 import io.github.luizimcpi.web.dto.response.TransacaoResponse
 import jakarta.inject.Singleton
+import javax.transaction.Transactional
 
 @Singleton
 class TransacaoService(private val clienteRepository: ClienteRepository,
                        private val transacaoRepository: TransacaoRepository
 ) {
 
+    @Transactional
     fun criaTransacao(request: TransacaoRequest, clienteId: Long): TransacaoResponse {
         val cliente = clienteRepository.findById(clienteId)
         if(cliente.isPresent){
@@ -48,6 +50,7 @@ class TransacaoService(private val clienteRepository: ClienteRepository,
         throw NotFoundException("Cliente não encontrado")
     }
 
+    @Transactional
     fun extrato(clienteId: Long): ExtratoResponse {
         val cliente = clienteRepository.findById(clienteId)
         if(cliente.isPresent) {
