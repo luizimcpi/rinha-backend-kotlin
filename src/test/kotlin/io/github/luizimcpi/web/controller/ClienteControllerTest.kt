@@ -85,7 +85,7 @@ class UserControllerTest {
     @Test
     @Order(3)
     fun `should create transaction fail when receive valid body with type debit and value more than limit`(){
-        val requestBody = "{\"valor\": 100001, \"tipo\": \"c\", \"descricao\": \"teste\"}"
+        val requestBody = "{\"valor\": 100001, \"tipo\": \"d\", \"descricao\": \"teste\"}"
         val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/1/transacoes", requestBody)
 
         val thrown = assertThrows<HttpClientResponseException> {
@@ -123,6 +123,19 @@ class UserControllerTest {
 
     @Test
     @Order(6)
+    fun `should create transaction fail when receive invalid body with decimal value`(){
+        val requestBody = "{\"valor\": 1.2, \"tipo\": \"c\", \"descricao\": \"teste\"}"
+        val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/1/transacoes", requestBody)
+
+        val thrown = assertThrows<HttpClientResponseException> {
+            httpClient.toBlocking().exchange(request, Argument.listOf(TransacaoResponse::class.java))
+        }
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, thrown.status)
+    }
+
+    @Test
+    @Order(7)
     fun `should create transaction fail when receive invalid body without tipo`(){
         val requestBody = "{\"valor\": 100000, \"descricao\": \"teste\"}"
         val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/1/transacoes", requestBody)
@@ -135,7 +148,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     fun `should create transaction fail when receive invalid body with empty tipo`(){
         val requestBody = "{\"valor\": 100000, \"tipo\": \"\", \"descricao\": \"teste\"}"
         val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/1/transacoes", requestBody)
@@ -149,7 +162,7 @@ class UserControllerTest {
 
 
     @Test
-    @Order(8)
+    @Order(9)
     fun `should create transaction fail when receive invalid body with tipo z`(){
         val requestBody = "{\"valor\": 100000, \"tipo\": \"z\", \"descricao\": \"teste\"}"
         val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/1/transacoes", requestBody)
@@ -162,7 +175,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     fun `should create transaction fail when receive invalid body without description`(){
         val requestBody = "{\"valor\": 100000, \"tipo\": \"c\"}"
         val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/1/transacoes", requestBody)
@@ -175,7 +188,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     fun `should create transaction fail when receive invalid body with empty description`(){
         val requestBody = "{\"valor\": 100000, \"tipo\": \"d\", \"descricao\": \"\"}"
         val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/1/transacoes", requestBody)
@@ -188,7 +201,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     fun `should create transaction fail when receive valid body but path with invalid client id`(){
         val requestBody = "{\"valor\": 100000, \"tipo\": \"c\", \"descricao\": \"teste\"}"
         val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/6/transacoes", requestBody)
@@ -201,7 +214,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(12)
+    @Order(13)
     fun `should create transaction fail when receive invalid body with description more than 10 chars`(){
         val requestBody = "{\"valor\": 100000, \"tipo\": \"c\", \"descricao\": \"test_more_than_10_chars\"}"
         val request: MutableHttpRequest<String>? = HttpRequest.POST("/clientes/1/transacoes", requestBody)
@@ -214,7 +227,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(13)
+    @Order(14)
     fun `should get statement success when receive valid id`(){
         val request: HttpRequest<*> = HttpRequest.GET<Any>("/clientes/1/extrato")
         val response = httpClient.toBlocking().exchange(request, Argument.listOf(ExtratoResponse::class.java))
@@ -231,7 +244,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(14)
+    @Order(15)
     fun `should get statement fail when receive invalid id`(){
         val request: HttpRequest<*> = HttpRequest.GET<Any>("/clientes/6/extrato")
 

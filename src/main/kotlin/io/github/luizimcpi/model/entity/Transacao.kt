@@ -18,7 +18,7 @@ data class Transacao(
     var id: Long? = null,
 
     @Column
-    val valor: Long,
+    val valor: Int,
 
     @Column
     val tipo: String,

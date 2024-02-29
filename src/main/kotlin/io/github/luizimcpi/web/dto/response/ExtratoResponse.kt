@@ -18,7 +18,7 @@ data class SaldoResponse(
 
 @Introspected
 data class TransacaoExtratoResponse(
-        val valor: Long,
+        val valor: Int,
         val tipo: String,
         val descricao: String,
         val realizadaEm: LocalDateTime

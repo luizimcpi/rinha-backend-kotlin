@@ -27,11 +27,20 @@ class ClienteController (private val transacaoService: TransacaoService) {
     }
 
     private fun verifyRequest(transacaoRequest: TransacaoRequest, id: Long) {
+        if(transacaoRequest.valor % 1 != 0f){
+            throw UnprocessableEnityException("Campo valor inválido")
+        }
+        if(transacaoRequest.tipo.isNullOrBlank()){
+            throw UnprocessableEnityException("Campo tipo obrigatório")
+        }
         if (transacaoRequest.tipo != "d" && transacaoRequest.tipo != "c") {
-            throw UnprocessableEnityException("tipo não suportado")
+            throw UnprocessableEnityException("Tipo não suportado")
+        }
+        if(transacaoRequest.descricao.isNullOrBlank()) {
+            throw UnprocessableEnityException("Campo descrição obrigatório")
         }
         if (transacaoRequest.descricao.length > 10) {
-            throw UnprocessableEnityException("Tamanho da descricao não suportado")
+            throw UnprocessableEnityException("Tamanho da descrição não suportado")
         }
         if (id < 1 || id > 5) {
             throw NotFoundException("Cliente não existe")

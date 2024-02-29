@@ -22,23 +22,22 @@ class TransacaoService(private val clienteRepository: ClienteRepository,
         if(cliente.isPresent){
             var saldoAtual = cliente.get().saldo
             if(request.tipo == "d"){
-                saldoAtual -= request.valor
+                if (request.valor > saldoAtual + cliente.get().limite) {
+                    throw UnprocessableEnityException("saldo inconsistente")
+                }
+                saldoAtual -= request.valor.toInt()
             }
             if(request.tipo == "c"){
-                saldoAtual += request.valor
-            }
-
-            if ( saldoAtual < -cliente.get().limite || saldoAtual > cliente.get().limite) {
-                throw UnprocessableEnityException("saldo inconsistente")
+                saldoAtual += request.valor.toInt()
             }
 
             val clienteAtualizar = cliente.get().copy(saldo = saldoAtual)
             val clienteAtualizado = clienteRepository.update(clienteAtualizar)
 
             val transacao = Transacao(
-                valor = request.valor,
-                tipo = request.tipo,
-                descricao = request.descricao,
+                valor = request.valor.toInt(),
+                tipo = request.tipo!!,
+                descricao = request.descricao!!,
                 clienteId = cliente.get().id!!
             )
             transacaoRepository.save(transacao)
