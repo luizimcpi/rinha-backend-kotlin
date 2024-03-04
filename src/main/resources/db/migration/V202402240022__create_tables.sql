@@ -1,17 +1,17 @@
 CREATE TABLE public.clientes
 (
-  id SERIAL PRIMARY KEY,
+  id INT PRIMARY KEY,
   limite INT NOT NULL,
   saldo INT NOT NULL DEFAULT 0
 );
 
-insert into public.clientes (limite)
+insert into public.clientes (id, limite)
 values
-(100000),
-(80000),
-(1000000),
-(10000000),
-(500000);
+(1, 100000),
+(2, 80000),
+(3, 1000000),
+(4, 10000000),
+(5, 500000);
 
 CREATE TABLE public.transacoes
 (

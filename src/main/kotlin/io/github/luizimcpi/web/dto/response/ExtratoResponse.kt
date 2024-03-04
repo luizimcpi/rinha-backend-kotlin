@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 @Introspected
 data class ExtratoResponse(
-    val saldoResponse: SaldoResponse,
+    val saldo: SaldoResponse,
     val ultimasTransacoes: List<TransacaoExtratoResponse>
 )
 

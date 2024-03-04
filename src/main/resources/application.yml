@@ -14,6 +14,8 @@ datasources:
     username: ${DATABASE_USER:postgres}
     password: ${DATABASE_PASSWORD:postgres}
     dialect: POSTGRES
+    minPoolSize: 1
+    maxPoolSize: 10
 jpa:
   default:
     packages-to-scan:
