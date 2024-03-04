@@ -18,7 +18,7 @@ class TransacaoService(private val clienteRepository: ClienteRepository,
 ) {
 
     fun criaTransacao(request: TransacaoRequest, clienteId: Long): TransacaoResponse {
-        val cliente = clienteRepository.findByClienteByIdForUpdate(clienteId)
+        val cliente = clienteRepository.findClienteByIdForUpdate(clienteId)
         if(cliente.isPresent){
             var saldoAtual = cliente.get().saldo
             if(request.tipo == "d"){
@@ -48,7 +48,7 @@ class TransacaoService(private val clienteRepository: ClienteRepository,
     }
 
     fun extrato(clienteId: Long): ExtratoResponse {
-        val cliente = clienteRepository.findByClienteByIdForUpdate(clienteId)
+        val cliente = clienteRepository.findClienteByIdForUpdate(clienteId)
         if(cliente.isPresent) {
             val saldoResponse = SaldoResponse(total = cliente.get().saldo, limite = cliente.get().limite)
             var transacoes = transacaoRepository.findTop10ByClienteIdOrderByRealizadaEmDesc(clienteId).map {

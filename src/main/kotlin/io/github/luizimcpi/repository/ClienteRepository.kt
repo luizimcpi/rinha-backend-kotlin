@@ -11,5 +11,5 @@ import java.util.Optional
 interface ClienteRepository: JpaRepository<Cliente, Long> {
 
     @Query("select * from clientes WHERE id = :clienteId FOR UPDATE", nativeQuery = true)
-    fun findByClienteByIdForUpdate(clienteId: Long): Optional<Cliente>
+    fun findClienteByIdForUpdate(clienteId: Long): Optional<Cliente>
 }
