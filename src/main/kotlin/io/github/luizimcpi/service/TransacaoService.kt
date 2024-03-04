@@ -51,11 +51,11 @@ class TransacaoService(private val clienteRepository: ClienteRepository,
         val cliente = clienteRepository.findById(clienteId)
         if(cliente.isPresent) {
             val saldoResponse = SaldoResponse(total = cliente.get().saldo, limite = cliente.get().limite)
-            val transacoes = transacaoRepository.findTop10ByClienteIdOrderByRealizadaEmDesc(clienteId).map {
+            var transacoes = transacaoRepository.findTop10ByClienteIdOrderByRealizadaEmDesc(clienteId).map {
                 TransacaoExtratoResponse(it.valor, it.tipo, it.descricao, it.realizadaEm!!)
             }
 
-            return ExtratoResponse(saldoResponse = saldoResponse, ultimasTransacoes = transacoes)
+            return ExtratoResponse(saldo = saldoResponse, ultimasTransacoes = transacoes)
         }
         throw NotFoundException("Cliente não encontrado")
     }
