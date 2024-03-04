@@ -237,9 +237,9 @@ class UserControllerTest {
         assertNotNull(extrato)
         assertFalse(extrato.ultimasTransacoes.isEmpty())
         assertTrue(extrato.ultimasTransacoes.size == 2)
-        assertEquals(extrato.saldoResponse.limite, 100000)
-        assertEquals(extrato.saldoResponse.total, 0)
-        assertNotNull(extrato.saldoResponse.dataExtrato)
+        assertEquals(extrato.saldo.limite, 100000)
+        assertEquals(extrato.saldo.total, 0)
+        assertNotNull(extrato.saldo.dataExtrato)
         assertEquals(HttpStatus.OK, response.status)
     }
 
