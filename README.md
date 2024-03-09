@@ -39,10 +39,6 @@
 - [Micronaut Test Resources documentation](https://micronaut-projects.github.io/micronaut-test-resources/latest/guide/)
 
 
-## Feature security-jwt documentation
-
-- [Micronaut Security JWT documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html)
-
 
 ## Feature flyway documentation
 
@@ -54,4 +50,9 @@
 ## RUN THIS APP
 ```
 docker-compose up
+```
+
+## Execute manually requests
+```
+use requests.http file and humao.rest-client vscode plugin
 ```

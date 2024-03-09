@@ -51,7 +51,7 @@ class TransacaoService(private val clienteRepository: ClienteRepository,
         val cliente = clienteRepository.findClienteByIdForUpdate(clienteId)
         if(cliente.isPresent) {
             val saldoResponse = SaldoResponse(total = cliente.get().saldo, limite = cliente.get().limite)
-            var transacoes = transacaoRepository.findTop10ByClienteIdOrderByRealizadaEmDesc(clienteId).map {
+            val transacoes = transacaoRepository.findTop10ByClienteIdOrderByRealizadaEmDesc(clienteId).map {
                 TransacaoExtratoResponse(it.valor, it.tipo, it.descricao, it.realizadaEm!!)
             }
 
